@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased`} suppressHydrationWarning>
+      <body className={`font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
         <Preloader />
         <Navbar />
         {children}
