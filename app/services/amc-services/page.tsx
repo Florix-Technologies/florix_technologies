@@ -4,10 +4,12 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 import { useEffect, useRef } from "react"
 import { Settings, BarChart3, AlertCircle, Clock, Shield, Users } from "lucide-react"
 
 export default function AMCServicesPage() {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -92,7 +94,11 @@ export default function AMCServicesPage() {
             </p>
 
             <div className="flex gap-4 pt-6">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white">
+              <Button
+                size="lg"
+                className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => router.push("/services/amc-plans")}
+              >
                 View AMC Plans
               </Button>
               <Button
@@ -119,10 +125,10 @@ export default function AMCServicesPage() {
             </motion.div>
           </motion.div>
         </div>
-      </section>
+      </section >
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50 relative z-10">
+      < section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50 relative z-10" >
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -160,7 +166,7 @@ export default function AMCServicesPage() {
             })}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* CTA Section */}
       <section className="py-20 px-6 relative z-10">
@@ -196,6 +202,6 @@ export default function AMCServicesPage() {
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" data-scroll="0.15" />
         <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl" data-scroll="0.3" />
       </div>
-    </div>
+    </div >
   )
 }
