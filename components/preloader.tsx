@@ -34,7 +34,11 @@ export function Preloader() {
             {show && (
                 <motion.div
                     className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden pb-14 md:pb-20"
-                    exit={enableExitAnimation ? { opacity: 0 } : {}}
+                    exit={
+                        enableExitAnimation
+                            ? { opacity: 0, pointerEvents: "none", transitionEnd: { display: "none" } }
+                            : { opacity: 0, pointerEvents: "none", transitionEnd: { display: "none" } }
+                    }
                     transition={{ duration: 0.8, ease: "easeInOut" }}
                 >
                     {/* 
