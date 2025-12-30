@@ -5,9 +5,11 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { BrainCircuit, Zap, Target, BarChart3, Shield, Cpu } from "lucide-react"
 
 export default function AIPage() {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -92,7 +94,11 @@ export default function AIPage() {
             </p>
 
             <div className="flex gap-4 pt-6">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white">
+              <Button
+                size="lg"
+                className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => router.push("/request-quote")}
+              >
                 Explore AI Solutions
               </Button>
               <Button

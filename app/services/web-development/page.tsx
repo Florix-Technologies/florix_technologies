@@ -4,10 +4,12 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { Globe, Code, Zap, Shield, Combine as Mobile, BarChart3 } from "lucide-react"
 import { IconCloudDemo } from "@/components/icon-cloud-demo"
 
 export default function WebDevelopmentPage() {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -96,7 +98,11 @@ export default function WebDevelopmentPage() {
             </p>
 
             <div className="flex gap-4 pt-6">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white">
+              <Button
+                size="lg"
+                className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => router.push("/request-quote")}
+              >
                 Start Your Project
               </Button>
               <Button

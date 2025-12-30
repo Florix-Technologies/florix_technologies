@@ -18,7 +18,7 @@ export function Preloader() {
             // If first visit, show and set up exit
             sessionStorage.setItem("florix-visited", "true")
             setEnableExitAnimation(true)
-            const timer = setTimeout(() => setShow(false), 6000)
+            const timer = setTimeout(() => setShow(false), 4000)
             return () => clearTimeout(timer)
         }
     }, [])

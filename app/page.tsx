@@ -211,7 +211,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="min-h-[70vh] md:min-h-screen flex items-center justify-center px-6 pt-28 md:pt-32 relative overflow-hidden"
+        className="min-h-[70vh] md:min-h-screen flex items-center justify-center px-6 pt-20 md:pt-24 relative overflow-hidden"
       >
         {/* Meteors background - full-cover absolute so it sits behind content */}
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden h-auto md:h-[500px]">

@@ -5,9 +5,11 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { Headphones, Clock, AlertCircle, BarChart3, Users, Zap } from "lucide-react"
 
 export default function ITSupportPage() {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -98,7 +100,11 @@ export default function ITSupportPage() {
             </p>
 
             <div className="flex gap-4 pt-6">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white">
+              <Button
+                size="lg"
+                className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => router.push("/request-quote")}
+              >
                 Schedule Support
               </Button>
               <Button

@@ -163,6 +163,29 @@ export function QuoteForm() {
                         </div>
                     </>
                 )
+            case "IT Consulting":
+            case "Office Networking":
+                return (
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className={labelStyles}>Appointment Date</label>
+                            <Input
+                                type="date"
+                                onChange={(e) => handleDetailChange("appointmentDate", e.target.value)}
+                                value={serviceDetails.appointmentDate || ""}
+                                min={new Date().toISOString().split('T')[0]}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className={labelStyles}>Preferred Time</label>
+                            <Input
+                                type="time"
+                                onChange={(e) => handleDetailChange("appointmentTime", e.target.value)}
+                                value={serviceDetails.appointmentTime || ""}
+                            />
+                        </div>
+                    </div>
+                )
             case "IT Support":
             case "AMC Services":
                 return (
