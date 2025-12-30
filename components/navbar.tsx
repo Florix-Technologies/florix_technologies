@@ -263,7 +263,7 @@ export function Navbar() {
             <Button
               size="sm"
               className="rounded-full bg-primary hover:bg-primary/90 text-white"
-              onClick={(e) => handleLinkClick(e, "#contact")}
+              onClick={(e) => handleLinkClick(e, "/request-quote")}
             >
               Request Quote
             </Button>
@@ -317,7 +317,7 @@ export function Navbar() {
                 size="sm"
                 className="rounded-full bg-primary hover:bg-primary/90 text-white w-full mt-2"
                 onClick={(e) => {
-                  handleLinkClick(e, "#contact")
+                  handleLinkClick(e, "/request-quote")
                   // No setOpen(false) needed as page will change
                 }}
               >

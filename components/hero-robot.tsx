@@ -604,7 +604,7 @@ export default function HeroRobot({
             <Canvas
                 shadows
                 camera={{ position: [0, 0, 10], fov: 40 }} // Adjusted camera for better overlay control
-                style={{ width: '100vw', height: '100vh' }}
+                style={{ width: '100vw', height: '100vh', pointerEvents: 'none' }}
                 gl={{ alpha: true, antialias: true }}
             >
                 <ambientLight intensity={2.5} />

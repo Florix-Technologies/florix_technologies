@@ -1,202 +1,149 @@
 "use client"
 
+import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import PCRecommendationSystem from "@/components/PC_station/page"
 import { Button } from "@/components/ui/button"
+import { Monitor, Cpu, PenTool, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
-import { useEffect, useRef } from "react"
-import { Monitor, Zap, Shield, Users, Award, Wrench } from "lucide-react"
 
 export default function PCBuildingPage() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [builderMode, setBuilderMode] = useState<"landing" | "pc" | "laptop">("landing")
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const scrollY = window.scrollY
-        const elements = containerRef.current.querySelectorAll("[data-scroll]")
-        elements.forEach((el: Element) => {
-          const element = el as HTMLElement
-          const speed = element.getAttribute("data-scroll") || "0.5"
-          element.style.transform = `translateY(${scrollY * Number.parseFloat(speed)}px)`
-        })
-      }
-    }
+  if (builderMode !== "landing") {
+    return (
+      <div className="min-h-screen bg-black dark text-foreground">
+        <Navbar />
+        <div className="pt-20">
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const features = [
-    {
-      icon: Zap,
-      title: "High Performance",
-      description: "Custom builds optimized for gaming, design, or business workloads",
-    },
-    {
-      icon: Users,
-      title: "Expert Consultation",
-      description: "Personalized guidance to choose the perfect components",
-    },
-    {
-      icon: Shield,
-      title: "Quality Assurance",
-      description: "Rigorous testing and quality checks before delivery",
-    },
-    {
-      icon: Wrench,
-      title: "Installation & Setup",
-      description: "Professional assembly and OS installation included",
-    },
-    {
-      icon: Award,
-      title: "Warranty Support",
-      description: "Comprehensive warranty and after-sales support",
-    },
-    {
-      icon: Monitor,
-      title: "Custom Configuration",
-      description: "Build exactly what you need within your budget",
-    },
-  ]
+          <PCRecommendationSystem mode={builderMode} />
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-white" ref={containerRef}>
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center pt-32 px-6 relative z-10">
-        <div className="max-w-6xl mx-auto w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-sm text-foreground">PC Building Services</span>
-            </div>
+      <section className="pt-32 pb-20 px-6 bg-white text-gray-900 overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[120px]" />
+        </div>
 
-            <h1 className="text-6xl md:text-7xl font-bold text-balance">
-              <span className="text-foreground">Custom-Built Computers </span>
-              <span className="text-primary">Tailored for You</span>
-            </h1>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col gap-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-green-100 border border-green-200 rounded-full text-green-700 text-sm font-medium">
+                <Monitor className="w-4 h-4" />
+                <span>Custom PC & Laptop Services</span>
+              </div>
+              <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900">
+                Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Dream Machine</span>
+              </h1>
+              <p className="text-gray-600 text-xl mb-8 leading-relaxed max-w-lg mx-auto">
+                Expert assembly, premium cable management, and rigorous stress testing. We build high-performance PCs tailored to your specific needs.
+              </p>
 
-            <p className="text-xl text-muted-foreground max-w-2xl">
-              Get high-performance custom-built PCs designed specifically for your needs, whether for gaming, content
-              creation, or business applications.
-            </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 h-14 text-lg shadow-lg shadow-green-200"
+                  onClick={() => setBuilderMode("pc")}
+                >
+                  Configure Your PC <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-full px-8 h-14 text-lg bg-transparent"
+                  onClick={() => setBuilderMode("laptop")}
+                >
+                  Configure Your Laptop <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+            </motion.div>
 
-            <div className="flex gap-4 pt-6">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white">
-                Configure Your PC
-              </Button>
-              <Button
-                size="lg"
-                className="rounded-full"
-                onClick={() =>
-                  window.open("https://wa.me/919986639994?text=I%20am%20interested%20in%20PC%20Building%20services")
-                }
-              >
-                Contact Us Today
-              </Button>
-            </div>
-
-            {/* Hero Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-12 rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 h-96"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative w-full"
             >
-              <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-blue-100 flex items-center justify-center">
-                <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}>
-                  <Monitor className="w-48 h-48 text-primary/20" />
-                </motion.div>
+              <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50 w-full h-[400px] lg:h-[500px] flex items-center justify-center">
+                <div className="text-center p-12">
+                  <Cpu className="w-40 h-40 text-green-500 mx-auto mb-8 opacity-80" />
+                  <p className="text-gray-500 font-medium text-xl">High Performance Architecture</p>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl font-bold mb-4">Why Build with Us</h2>
-            <p className="text-xl text-muted-foreground">
-              Premium components and expert assembly for optimal performance
-            </p>
-          </motion.div>
+      {/* Benefits Section */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Why Choose Florix Builds?</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">We don't just assemble parts; we craft machines engineered for perfection.</p>
+          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
-                >
-                  <motion.div
-                    className="p-4 rounded-xl bg-primary/10 inline-block group-hover:bg-primary/20 transition-colors mb-4"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    <Icon className="w-6 h-6 text-primary" />
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </motion.div>
-              )
-            })}
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: PenTool,
+                title: "Professional Assembly",
+                desc: "Hand-built by experienced technicians with meticulous attention to cable management and airflow."
+              },
+              {
+                icon: ShieldCheck,
+                title: "Stress Tested",
+                desc: "Every system undergoes 24-hour stress testing to ensure absolute stability and thermal performance."
+              },
+              {
+                icon: CheckCircle2,
+                title: "Warranty & Support",
+                desc: "Comprehensive warranty on build quality and direct support from our technical team."
+              }
+            ].map((feature, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6">
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="space-y-6 p-12 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
+      <section className="py-20 px-6 bg-green-600 text-white text-center">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Build Your Custom PC?</h2>
+          <p className="text-green-50 text-lg mb-10">Use our advanced AI recommendation system to find the perfect components for your budget and needs.</p>
+          <Button
+            size="lg"
+            className="bg-white text-green-700 hover:bg-gray-100 rounded-full px-10 h-14 text-lg shadow-xl"
+            onClick={() => setBuilderMode("pc")}
           >
-            <h2 className="text-4xl font-bold">Build Your Perfect PC Today</h2>
-            <p className="text-lg text-muted-foreground">
-              Get a custom-built computer perfectly suited to your performance needs and budget.
-            </p>
-            <Button
-              size="lg"
-              className="rounded-full bg-primary hover:bg-primary/90 text-white px-8"
-              onClick={() => window.open("https://wa.me/919986639994?text=I%20want%20to%20build%20a%20custom%20PC")}
-            >
-              Start PC Configuration
-            </Button>
-          </motion.div>
+            Start Configuration Now
+          </Button>
         </div>
       </section>
 
       <Footer />
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" data-scroll="0.2" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" data-scroll="0.15" />
-        <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl" data-scroll="0.3" />
-      </div>
     </div>
   )
 }

@@ -281,3 +281,42 @@
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* Live White Border Animation */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.live-border {
+  position: relative;
+  /* Ensure a fallback border exists or is part of the design */
+}
+
+.live-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  /* Border width */
+  background: conic-gradient(from var(--angle), transparent 50%, white 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: live-spin 3s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes live-spin {
+  to {
+    --angle: 360deg;
+  }
+}

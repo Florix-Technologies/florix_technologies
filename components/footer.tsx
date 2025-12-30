@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from "lucide-react"
 
+import Image from "next/image"
+
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
@@ -13,8 +15,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-primary">FLORIX</h3>
-            <p className="text-muted-foreground">Empowering businesses through innovative technology solutions.</p>
+            <Link href="/" className="block">
+              <Image
+                src="/Florix.png"
+                alt="Florix Logo"
+                width={800}
+                height={100}
+                className="h-28 w-auto object-contain"
+              />
+            </Link>
+            <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+              A Division Of Florix Smart Infra Solutions Pvt, Ltd.
+            </p>
             <div className="flex gap-4 pt-4">
               <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="w-5 h-5" />
@@ -31,54 +43,21 @@ export function Footer() {
           {/* Services Links */}
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Services</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/services/web-development"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Web Development
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/it-support"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  IT Support
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/it-consulting"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  IT Consulting
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/artificial-intelligence"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  AI Solutions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/amc-services"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  AMC Services
-                </Link>
-              </li>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/services/web-development" className="text-muted-foreground hover:text-primary transition-colors">Web Development</Link></li>
+              <li><Link href="/services/it-support" className="text-muted-foreground hover:text-primary transition-colors">IT Support</Link></li>
+              <li><Link href="/services/it-consulting" className="text-muted-foreground hover:text-primary transition-colors">IT Consulting</Link></li>
+              <li><Link href="/services/artificial-intelligence" className="text-muted-foreground hover:text-primary transition-colors">AI Solutions</Link></li>
+              <li><Link href="/services/amc-services" className="text-muted-foreground hover:text-primary transition-colors">AMC Services</Link></li>
+              <li><Link href="/services/pc-building" className="text-muted-foreground hover:text-primary transition-colors">PC Building</Link></li>
+              <li><Link href="/services/office-networking" className="text-muted-foreground hover:text-primary transition-colors">Office Networking</Link></li>
             </ul>
           </div>
 
           {/* Company Links */}
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Company</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
                   About Us
@@ -90,13 +69,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Careers
+                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
+                  Contact
                 </Link>
               </li>
             </ul>

@@ -136,7 +136,7 @@ export default function Home() {
     "IT Consulting": "/services/it-consulting",
     "Artificial Intelligence": "/services/artificial-intelligence",
     "AMC Services": "/services/amc-services",
-    "PC Building": "/services/pc-building",
+    "PC and Laptop Building": "/services/pc-building",
     "Office Networking": "/services/office-networking",
   }
 
@@ -177,7 +177,7 @@ export default function Home() {
       color: "from-green-600/20 to-emerald-600/20",
     },
     {
-      title: "PC Building",
+      title: "PC and Laptop Building",
       description:
         "Get custom-built computers tailored to your exact specifications. Whether for gaming, content creation, or business applications, we source quality components, ensure optimal performance, and provide comprehensive warranties and ongoing support.",
       Icon: Monitor,
@@ -643,7 +643,7 @@ export default function Home() {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleFormChange}
-                        placeholder="John"
+                        placeholder="Sachin"
                         className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                         required
                       />
@@ -660,7 +660,7 @@ export default function Home() {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleFormChange}
-                        placeholder="Doe"
+                        placeholder="Tendulkar"
                         className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                         required
                       />
@@ -680,7 +680,7 @@ export default function Home() {
                         name="mobile"
                         value={formData.mobile}
                         onChange={handleFormChange}
-                        placeholder="+1 (555) 000-0000"
+                        placeholder="+91 98765 43210"
                         className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                         required
                       />
@@ -697,7 +697,7 @@ export default function Home() {
                         name="email"
                         value={formData.email}
                         onChange={handleFormChange}
-                        placeholder="john@example.com"
+                        placeholder="sachin.tendulkar@example.com"
                         className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                         required
                       />

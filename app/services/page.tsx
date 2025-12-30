@@ -110,7 +110,7 @@ export default function ServicesPage() {
       color: "from-green-600/20 to-emerald-600/20"
     },
     {
-      title: "PC Building",
+      title: "PC and Laptop Building",
       description: "Custom PC assembly for gaming, workstations, and office use. High-quality components and professional cable management.",
       icon: <Monitor className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
       link: "/services/pc-building",
