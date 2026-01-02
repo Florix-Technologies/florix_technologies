@@ -91,7 +91,7 @@ export function Navbar() {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Services", href: "/services" },
-    { name: "Contact", href: "#contact" }, // Changed to scroll to contact section
+    { name: "Contact", href: "/contact" },
   ]
 
   const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, href: string) => {

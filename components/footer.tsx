@@ -28,7 +28,12 @@ export function Footer() {
               A Division Of Florix Smart Infra Solutions Pvt, Ltd.
             </p>
             <div className="flex gap-4 pt-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link
+                href="https://www.linkedin.com/pulse/building-technology-empowers-progress-florix-technologies-kcu5c"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">

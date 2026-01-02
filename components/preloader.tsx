@@ -18,7 +18,7 @@ export function Preloader() {
             // If first visit, show and set up exit
             sessionStorage.setItem("florix-visited", "true")
             setEnableExitAnimation(true)
-            const timer = setTimeout(() => setShow(false), 4000)
+            const timer = setTimeout(() => setShow(false), 2800)
             return () => clearTimeout(timer)
         }
     }, [])
@@ -75,10 +75,10 @@ export function Preloader() {
                                 opacity: 1,
                                 width: "auto", // Expands to fit content
                                 transition: {
-                                    delay: 2.0, // Wait before expanding
-                                    duration: 1.2,
+                                    delay: 1.4, // Wait before expanding (Reduced from 2.0)
+                                    duration: 1.0, // (Reduced from 1.2)
                                     ease: [0.22, 1, 0.36, 1],
-                                    opacity: { delay: 2.1, duration: 1.0 } // Fade in slightly after expansion starts
+                                    opacity: { delay: 1.5, duration: 0.8 } // Fade in slightly after expansion starts (Reduced from 2.1)
                                 }
                             }}
                         >
@@ -89,7 +89,7 @@ export function Preloader() {
                                     className="text-3xl md:text-5xl font-semibold text-[#307828] tracking-normal leading-none font-sans" // Using a specific brand-like green
                                     initial={{ x: 20 }}
                                     animate={{ x: 0 }}
-                                    transition={{ delay: 2.1, duration: 1.0, ease: "easeOut" }}
+                                    transition={{ delay: 1.5, duration: 1.0, ease: "easeOut" }} // Reduced from 2.1
                                 >
                                     FLORIX
                                 </motion.h1>
@@ -99,7 +99,7 @@ export function Preloader() {
                                     className="block text-[8px] md:text-[10px] font-medium text-[#111]/60 tracking-[0.35em] md:tracking-[0.8em] uppercase leading-none mt-1 pl-1" // Responsive tracking: tighter on mobile, wide on desktop
                                     initial={{ x: 15 }}
                                     animate={{ x: 0 }}
-                                    transition={{ delay: 2.3, duration: 1.0, ease: "easeOut" }}
+                                    transition={{ delay: 1.7, duration: 1.0, ease: "easeOut" }} // Reduced from 2.3
                                 >
                                     TECHNOLOGIES
                                 </motion.span>

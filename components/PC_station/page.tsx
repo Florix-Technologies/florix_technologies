@@ -76,9 +76,50 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
   const [loadingRecommendations, setLoadingRecommendations] = useState(false)
   const [recommendationsError, setRecommendationsError] = useState<string | null>(null)
 
+  const [errors, setErrors] = useState<Partial<FormData>>({})
+
+  const validateStep = (step: number) => {
+    const newErrors: Partial<FormData> = {}
+    let isValid = true
+
+    if (step === 0) {
+      if (!formData.name.trim()) { newErrors.name = "Name is required"; isValid = false }
+      if (!formData.email.trim()) { newErrors.email = "Email is required"; isValid = false }
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) { newErrors.email = "Invalid email format"; isValid = false }
+      if (!formData.phone.trim()) { newErrors.phone = "Phone is required"; isValid = false }
+    }
+
+    if (step === 1) {
+      if (!formData.usage) { newErrors.usage = "Usage selection is required"; isValid = false }
+      if (!formData.requirements.trim()) { newErrors.requirements = "Requirements are required"; isValid = false }
+      if (!formData.cabinetType) { newErrors.cabinetType = isLaptop ? "Screen size is required" : "Cabinet type is required"; isValid = false }
+      if (!formData.rgbPreference) { newErrors.rgbPreference = "RGB preference is required"; isValid = false }
+      // Brands can be optional or required. User said "every field". Let's require at least one brand? 
+      // "Preferred Brands / Components" often implies optional. But let's stick to "every field" request unless it breaks flow.
+      // If brands is empty, let's not block, as it says "Preferred". But specific instruction "every field compusary".
+      // I'll leave brands effectively optional as it's a checkbox group often used for "any", but adds validation if user wants "every field". 
+      // Actually, let's make it optional as strictly required might be annoying if they have no preference.
+      // Wait, user said "every field should be compulsory". I will make it required then. 
+      if (formData.brands.length === 0) { newErrors.brands = ["Please select at least one brand"] as any; isValid = false }
+    }
+
+    if (step === 2) {
+      if (!formData.speed) { newErrors.speed = "Speed preference is required"; isValid = false }
+      if (!formData.storageCapacity) { newErrors.storageCapacity = "Storage capacity is required"; isValid = false }
+      if (!formData.graphicsPower) { newErrors.graphicsPower = "Graphics power is required"; isValid = false }
+      if (!formData.quietCooling) { newErrors.quietCooling = "Cooling preference is required"; isValid = false }
+      if (!formData.budget) { newErrors.budget = "Budget range is required"; isValid = false }
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
   const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1)
+    if (validateStep(currentStep)) {
+      if (currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1)
+      }
     }
   }
 
@@ -89,32 +130,55 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
   }
 
   const handleSubmit = async () => {
+    if (!validateStep(2)) return
+
     console.log("Form submitted:", formData)
     setRecommendations(null)
     setRecommendationsError(null)
     setLoadingRecommendations(true)
 
-    // Map frontend form values to backend expected payload
-    const mapBudgetToNumber = (budgetStr: string) => {
-      if (!budgetStr) return 80000
-      const nums = budgetStr.replace(/[^0-9–\-]/g, "").split(/–|-/).map((s) => Number(s)).filter(Boolean)
-      if (nums.length === 0) return 80000
-      if (nums.length === 1) return nums[0]
-      return Math.round((nums[0] + nums[1]) / 2)
+    // Helper to map storage capacity
+    const mapStorage = (value: string) => {
+      switch (value) {
+        case "low": return "Low(256GB-512GB)"
+        case "medium": return "Medium(1TB-2TB)"
+        case "high": return "High(4TB+)"
+        default: return "Medium(1TB-2TB)"
+      }
+    }
+
+    // Helper to map graphics power
+    const mapGraphics = (value: string) => {
+      switch (value) {
+        case "low": return "Low(Integrated)"
+        case "medium": return "Medium(Entry GPU)"
+        case "high": return "High(Gaming GPU)"
+        case "ultra": return "Ultra(Enthusiast GPU)"
+        default: return "Medium(Entry GPU)"
+      }
+    }
+
+    // Helper to map budget (remove currency symbol)
+    const mapBudget = (value: string) => {
+      if (!value) return "60,000-80,000"
+      return value.replace(/₹/g, "").replace(/ /g, "").replace(/–/g, "-")
     }
 
     const payload = {
-      usage: formData.usage || "",
-      // simple heuristic: gaming => gpu high, else cpu high
-      cpu_priority: formData.usage === "Gaming" ? "medium" : "high",
-      gpu_priority: formData.usage === "Gaming" ? "high" : "medium",
-      storage_priority: formData.storageCapacity || "medium",
-      budget: mapBudgetToNumber(formData.budget || ""),
-      brands: formData.brands || [],
+      usage: formData.usage?.toLowerCase() || "gaming",
+      preferred_brands: formData.brands && formData.brands.length > 0 ? formData.brands : ["NVIDIA GPU"],
+      speed: formData.speed ? (formData.speed.charAt(0).toUpperCase() + formData.speed.slice(1)) : "Medium",
+      storage_capacity: mapStorage(formData.storageCapacity),
+      graphics_power: mapGraphics(formData.graphicsPower),
+      quiet_cooling: formData.quietCooling || "medium",
+      budget: mapBudget(formData.budget),
     }
 
     try {
-      const res = await fetch("http://localhost:8000/recommend", {
+      const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+
+
+      const res = await fetch(`${backendUrl}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -123,7 +187,23 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
       if (!res.ok) throw new Error(`Request failed: ${res.status}`)
 
       const data = await res.json()
-      setRecommendations(data.recommendations || [])
+      console.log("API RAW RESPONSE:", data); // Debugging log
+
+      const recs = Array.isArray(data) ? data : (data.recommendations || [])
+      console.log("PROCESSED RECS:", recs); // Debugging log
+
+      setRecommendations(recs)
+
+      // Send email notification in background
+      fetch(`${backendUrl}/recommendation-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formData: { ...formData, ...payload },
+          recommendations: recs
+        }),
+      }).catch(err => console.error("Failed to send recommendation email", err));
+
     } catch (err: any) {
       console.error(err)
       setRecommendationsError(err.message || "Failed to fetch recommendations")
@@ -183,7 +263,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto"
+            className={`mx-auto transition-all duration-500 ${recommendations && recommendations.length > 0 ? "max-w-7xl" : "max-w-4xl"}`}
           >
             {/* Header */}
             <div className="text-center mb-12">
@@ -295,8 +375,9 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           placeholder="Enter your full name"
                           value={formData.name}
                           onChange={(e) => updateFormData("name", e.target.value)}
-                          className="bg-secondary/50 border-border focus:border-primary transition-all"
+                          className={`bg-secondary/50 border-border focus:border-primary transition-all ${errors.name ? "border-destructive" : ""}`}
                         />
+                        {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
                       </div>
 
                       <div>
@@ -309,8 +390,9 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           placeholder="your.email@example.com"
                           value={formData.email}
                           onChange={(e) => updateFormData("email", e.target.value)}
-                          className="bg-secondary/50 border-border focus:border-primary transition-all"
+                          className={`bg-secondary/50 border-border focus:border-primary transition-all ${errors.email ? "border-destructive" : ""}`}
                         />
+                        {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
                       </div>
 
                       <div>
@@ -323,8 +405,9 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           placeholder="+1 (555) 123-4567"
                           value={formData.phone}
                           onChange={(e) => updateFormData("phone", e.target.value)}
-                          className="bg-secondary/50 border-border focus:border-primary transition-all"
+                          className={`bg-secondary/50 border-border focus:border-primary transition-all ${errors.phone ? "border-destructive" : ""}`}
                         />
+                        {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone}</p>}
                       </div>
                     </div>
                   </div>
@@ -366,6 +449,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             </motion.div>
                           ))}
                         </RadioGroup>
+                        {errors.usage && <p className="text-destructive text-xs mt-1">{errors.usage}</p>}
                       </div>
 
                       <div>
@@ -377,8 +461,9 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           placeholder="Example: 4K gaming, Blender, video editing in 1080p..."
                           value={formData.requirements}
                           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateFormData("requirements", e.target.value)}
-                          className="bg-secondary/50 border-border focus:border-primary transition-all min-h-[120px]"
+                          className={`bg-secondary/50 border-border focus:border-primary transition-all min-h-[120px] ${errors.requirements ? "border-destructive" : ""}`}
                         />
+                        {errors.requirements && <p className="text-destructive text-xs mt-1">{errors.requirements}</p>}
                       </div>
 
                       <div>
@@ -403,6 +488,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             </motion.div>
                           ))}
                         </RadioGroup>
+                        {errors.cabinetType && <p className="text-destructive text-xs mt-1">{errors.cabinetType}</p>}
                       </div>
 
                       <div>
@@ -425,6 +511,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             </label>
                           ))}
                         </div>
+                        {errors.brands && <p className="text-destructive text-xs mt-1">{errors.brands as any}</p>}
                       </div>
 
                       <div>
@@ -448,6 +535,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             </motion.div>
                           ))}
                         </RadioGroup>
+                        {errors.rgbPreference && <p className="text-destructive text-xs mt-1">{errors.rgbPreference}</p>}
                       </div>
                     </div>
                   </div>
@@ -468,7 +556,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           Speed (SSD, RAM)
                         </Label>
                         <Select value={formData.speed} onValueChange={(value: string) => updateFormData("speed", value)}>
-                          <SelectTrigger className="bg-secondary/50 border-border focus:border-primary">
+                          <SelectTrigger className={`bg-secondary/50 border-border focus:border-primary ${errors.speed ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Select speed priority" />
                           </SelectTrigger>
                           <SelectContent>
@@ -477,6 +565,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             <SelectItem value="high">High</SelectItem>
                           </SelectContent>
                         </Select>
+                        {errors.speed && <p className="text-destructive text-xs mt-1">{errors.speed}</p>}
                       </div>
 
                       <div>
@@ -487,7 +576,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           value={formData.storageCapacity}
                           onValueChange={(value: string) => updateFormData("storageCapacity", value)}
                         >
-                          <SelectTrigger className="bg-secondary/50 border-border focus:border-primary">
+                          <SelectTrigger className={`bg-secondary/50 border-border focus:border-primary ${errors.storageCapacity ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Select storage capacity" />
                           </SelectTrigger>
                           <SelectContent>
@@ -496,6 +585,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             <SelectItem value="high">High (4TB+)</SelectItem>
                           </SelectContent>
                         </Select>
+                        {errors.storageCapacity && <p className="text-destructive text-xs mt-1">{errors.storageCapacity}</p>}
                       </div>
 
                       <div>
@@ -506,7 +596,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           value={formData.graphicsPower}
                           onValueChange={(value: string) => updateFormData("graphicsPower", value)}
                         >
-                          <SelectTrigger className="bg-secondary/50 border-border focus:border-primary">
+                          <SelectTrigger className={`bg-secondary/50 border-border focus:border-primary ${errors.graphicsPower ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Select graphics power" />
                           </SelectTrigger>
                           <SelectContent>
@@ -516,6 +606,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             <SelectItem value="ultra">Ultra (Enthusiast GPU)</SelectItem>
                           </SelectContent>
                         </Select>
+                        {errors.graphicsPower && <p className="text-destructive text-xs mt-1">{errors.graphicsPower}</p>}
                       </div>
 
                       <div>
@@ -526,7 +617,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                           value={formData.quietCooling}
                           onValueChange={(value: string) => updateFormData("quietCooling", value)}
                         >
-                          <SelectTrigger className="bg-secondary/50 border-border focus:border-primary">
+                          <SelectTrigger className={`bg-secondary/50 border-border focus:border-primary ${errors.quietCooling ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Select cooling priority" />
                           </SelectTrigger>
                           <SelectContent>
@@ -535,6 +626,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             <SelectItem value="high">High</SelectItem>
                           </SelectContent>
                         </Select>
+                        {errors.quietCooling && <p className="text-destructive text-xs mt-1">{errors.quietCooling}</p>}
                       </div>
 
                       <div>
@@ -561,6 +653,7 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
                             </motion.div>
                           ))}
                         </RadioGroup>
+                        {errors.budget && <p className="text-destructive text-xs mt-1">{errors.budget}</p>}
                       </div>
 
                       <div>
@@ -633,23 +726,55 @@ export default function PCRecommendationSystem({ mode = "pc" }: { mode?: "pc" | 
               <div className="mt-8 max-w-4xl mx-auto text-center text-destructive">{recommendationsError}</div>
             )}
 
-            {recommendations && recommendations.length > 0 && (
-              <div className="mt-8 max-w-4xl mx-auto">
-                <h3 className="text-2xl font-bold mb-4">Recommendations</h3>
-                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3">
-                  {recommendations.map((r, i) => (
-                    <div key={i} className="p-4 bg-secondary/30 border border-border rounded-lg">
-                      <h4 className="font-semibold">{r.name}</h4>
-                      <p className="text-sm text-muted-foreground">₹{r.total_price}</p>
-                      <p className="mt-2 text-sm">{r.explanation}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+
           </motion.div>
         </main>
-      </div>
-    </div>
+      </div >
+
+      {recommendations && recommendations.length > 0 && (
+        <section className="relative z-10 w-full px-4 py-16 bg-black/40 backdrop-blur-md border-t border-white/10">
+          <div className="max-w-[90%] mx-auto">
+            <h3 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
+              Your Personalized Recommendations
+            </h3>
+            <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+              {recommendations.map((r, i) => (
+                <div key={i} className="p-8 bg-secondary/20 border border-white/10 rounded-2xl hover:border-blue-500/50 hover:bg-secondary/30 transition-all duration-300 flex flex-col h-full shadow-lg shadow-black/50">
+                  <div className="mb-6 pb-4 border-b border-white/5">
+                    <h4 className="font-bold text-2xl text-blue-400 mb-2 min-h-[4rem] flex items-end leading-tight">{r.build_name}</h4>
+                    <p className="text-3xl font-bold text-white">₹{r.estimated_price}</p>
+                  </div>
+
+                  <div className="space-y-3 mb-8">
+                    {[
+                      { label: "CPU", value: r.cpu },
+                      { label: "GPU", value: r.gpu },
+                      { label: "RAM", value: r.ram },
+                      { label: "Storage", value: r.storage },
+                      { label: "Motherboard", value: r.motherboard },
+                      { label: "PSU", value: r.psu },
+                      { label: "Cabinet", value: r.cabinet },
+                    ].map((spec, idx) => (
+                      spec.value && (
+                        <div key={idx} className="flex text-sm border-b border-white/5 pb-2 last:border-0 hover:bg-white/5 transition-colors p-2 rounded">
+                          <span className="text-gray-400 w-32 flex-shrink-0 font-medium">{spec.label}:</span>
+                          <span className="text-gray-100 font-medium">{spec.value}</span>
+                        </div>
+                      )
+                    ))}
+                  </div>
+
+                  <div className="bg-blue-900/10 p-5 rounded-xl border border-blue-500/20 flex-grow flex flex-col justify-center min-h-[140px]">
+                    <p className="text-base text-gray-300 italic leading-relaxed text-center">
+                      "{r.why_this_build}"
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </div >
   )
 }

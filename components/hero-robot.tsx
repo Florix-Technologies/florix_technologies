@@ -603,15 +603,14 @@ export default function HeroRobot({
         <div className="fixed inset-0 z-30 pointer-events-none select-none overflow-hidden">
             <Canvas
                 shadows
+                dpr={[1, 1.5]} // Limit pixel ratio for performance
                 camera={{ position: [0, 0, 10], fov: 40 }} // Adjusted camera for better overlay control
-                style={{ width: '100vw', height: '100vh', pointerEvents: 'none' }}
+                style={{ width: '100%', height: '100vh', pointerEvents: 'none' }}
                 gl={{ alpha: true, antialias: true }}
             >
                 <ambientLight intensity={2.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={3} castShadow />
                 <pointLight position={[-10, -10, -10]} intensity={2} />
-                <Environment preset="studio" />
-
                 <Environment preset="studio" />
 
                 <ScrollManager heroRef={heroRef} visionRef={visionRef} servicesRef={servicesRef} contactRef={contactRef} ctaRef={ctaRef} />
@@ -636,7 +635,7 @@ function ScrollManager({
     const robotGroup = useRef<THREE.Group>(null)
     const [targetState, setTargetState] = useState<'hero' | 'vision' | 'services' | 'featureless' | 'contact' | 'cta'>('hero')
     const [serviceIndex, setServiceIndex] = useState(0)
-    const isLocked = useRef(false) // Lock mechanism
+    // Removed isLocked to allow smooth upward scrolling
     const { viewport } = useThree()
 
     // Real-time Scroll Handling (No Debounce for Super Smooth)
@@ -654,8 +653,6 @@ function ScrollManager({
         }
 
         const checkPosition = () => {
-            if (isLocked.current) return // Stop checks if locked
-
             const viewportHeight = window.innerHeight
             const isMobile = window.innerWidth < 768
 
@@ -665,7 +662,6 @@ function ScrollManager({
                 // Check if visible (Relaxed condition: As soon as it enters view)
                 if (rect.top < viewportHeight && rect.bottom > 0) {
                     setTargetState('cta')
-                    isLocked.current = true // LOCK IT
                     return
                 }
             }
@@ -903,13 +899,14 @@ function ScrollManager({
         }
 
         // Smoothly Interpolate
-        const lambda = 4.0
+        const lambda = 2.5 // Reduced for "cinematic" delay/inertia (per user request)
 
         // Position: Snap Y for sticky states to prevent scroll lag
         // Only CTA needs perfect snap as it is an overlay. Contact can use smooth lerp.
         if (targetState === 'cta') {
-            robotGroup.current.position.x = THREE.MathUtils.lerp(robotGroup.current.position.x, targetPos.x, lambda * delta)
-            robotGroup.current.position.z = THREE.MathUtils.lerp(robotGroup.current.position.z, targetPos.z, lambda * delta)
+            // SNAP to position for solid "fixed" feel (no floatiness)
+            robotGroup.current.position.x = targetPos.x
+            robotGroup.current.position.z = targetPos.z
             robotGroup.current.position.y = targetPos.y
         } else {
             robotGroup.current.position.lerp(targetPos, lambda * delta)

@@ -49,7 +49,8 @@ export function QuoteForm() {
                 serviceDetails
             }
 
-            const res = await fetch('/api/request-quote', {
+            const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+            const res = await fetch(`${backendUrl}/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -222,7 +223,7 @@ export function QuoteForm() {
     }
 
     return (
-        <div className="w-full max-w-xl mx-auto p-6 bg-white dark:bg-black/50 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 dark:border-white/10">
+        <div className="w-full max-w-xl mx-auto p-4 md:p-6 bg-white dark:bg-black/50 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 dark:border-white/10">
             <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-2">Request a Quote</h2>
                 <p className="text-muted-foreground">Tell us about your needs and we&apos;ll get back to you with a custom proposal.</p>
