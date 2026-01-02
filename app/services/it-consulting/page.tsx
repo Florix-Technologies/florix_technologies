@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { Lightbulb, TrendingUp, Users, Target, Zap, Shield } from "lucide-react"
+import { Lightbulb, TrendingUp, Users, Target, Zap, Shield, ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 export default function ITConsultingPage() {
   const router = useRouter()
@@ -67,65 +68,67 @@ export default function ITConsultingPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center pt-32 px-6 relative z-10">
-        <div className="max-w-6xl mx-auto w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-sm text-foreground">IT Consulting Services</span>
-            </div>
+      <section className="pt-32 pb-20 px-6 bg-white text-gray-900 overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[120px]" />
+        </div>
 
-            <h1 className="text-6xl md:text-7xl font-bold text-balance">
-              <span className="text-foreground">Navigate Your Technology </span>
-              <span className="text-primary">Journey</span>
-            </h1>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col gap-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-green-100 border border-green-200 rounded-full text-green-700 text-sm font-medium">
+                <Lightbulb className="w-4 h-4" />
+                <span>IT Consulting Services</span>
+              </div>
+              <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900">
+                Navigate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Technology Journey</span>
+              </h1>
+              <p className="text-gray-600 text-xl mb-8 leading-relaxed max-w-lg mx-auto">
+                Expert guidance to transform your technology infrastructure, optimize operations, and unlock new business opportunities.
+              </p>
 
-            <p className="text-xl text-muted-foreground max-w-2xl">
-              Expert guidance to transform your technology infrastructure, optimize operations, and unlock new business
-              opportunities.
-            </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 h-14 text-lg shadow-lg shadow-green-200"
+                  onClick={() => router.push("/request-quote")}
+                >
+                  Schedule Consultation <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-full px-8 h-14 text-lg bg-transparent"
+                  onClick={() => window.open("https://wa.me/919986639994?text=I%20am%20interested%20in%20IT%20Consulting%20services")}
+                >
+                  Contact Us Today <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+            </motion.div>
 
-            <div className="flex gap-4 pt-6">
-              <Button
-                size="lg"
-                className="rounded-full bg-primary hover:bg-primary/90 text-white"
-                onClick={() => router.push("/request-quote")}
-              >
-                Schedule Consultation
-              </Button>
-              <Button
-                size="lg"
-                className="rounded-full"
-                onClick={() =>
-                  window.open("https://wa.me/919986639994?text=I%20am%20interested%20in%20IT%20Consulting%20services")
-                }
-              >
-                Contact Us Today
-              </Button>
-            </div>
-
-            {/* Hero Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-12 rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 h-96"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative w-full max-w-4xl mx-auto"
             >
-              <div className="w-full h-full bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
-                <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}>
-                  <Lightbulb className="w-48 h-48 text-primary/20" />
-                </motion.div>
+              <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50 w-full h-auto aspect-video flex items-center justify-center">
+                <Image
+                  src="/images/it-hero.png"
+                  alt="IT Consulting Services Hero"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

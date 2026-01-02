@@ -82,7 +82,7 @@ export function QuoteForm() {
         "IT Consulting",
         "Artificial Intelligence",
         "AMC Services",
-        "PC and Laptop Building",
+        "PC building and Laptops",
         "Office Networking",
     ]
 

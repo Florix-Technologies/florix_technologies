@@ -188,7 +188,7 @@ export default function HomeClient() {
             color: "from-green-600/20 to-emerald-600/20",
         },
         {
-            title: "PC and Laptop Building",
+            title: "PC building and Laptops",
             description:
                 "Get custom-built computers tailored to your exact specifications. Whether for gaming, content creation, or business applications, we source quality components, ensure optimal performance, and provide comprehensive warranties and ongoing support.",
             Icon: Monitor,

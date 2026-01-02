@@ -7,6 +7,7 @@ import PCRecommendationSystem from "@/components/PC_station/page"
 import { Button } from "@/components/ui/button"
 import { Monitor, Cpu, PenTool, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export default function PCBuildingPage() {
   const [builderMode, setBuilderMode] = useState<"landing" | "pc" | "laptop">("landing")
@@ -77,13 +78,16 @@ export default function PCBuildingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative w-full"
+              className="relative w-full max-w-4xl mx-auto"
             >
-              <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50 w-full h-[400px] lg:h-[500px] flex items-center justify-center">
-                <div className="text-center p-12">
-                  <Cpu className="w-40 h-40 text-green-500 mx-auto mb-8 opacity-80" />
-                  <p className="text-gray-500 font-medium text-xl">High Performance Architecture</p>
-                </div>
+              <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50 w-full h-auto aspect-video flex items-center justify-center">
+                <Image
+                  src="/images/pc-build-hero.jpg"
+                  alt="PC Building Hero"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </motion.div>
           </div>
@@ -116,7 +120,7 @@ export default function PCBuildingPage() {
                 desc: "Comprehensive warranty on build quality and direct support from our technical team."
               }
             ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div key={i} className="p-8 rounded-2xl bg-white border border-gray-100 hover:border-green-500/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6">
                   <feature.icon className="w-6 h-6" />
                 </div>
@@ -129,17 +133,27 @@ export default function PCBuildingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-green-600 text-white text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Build Your Custom PC?</h2>
-          <p className="text-green-50 text-lg mb-10">Use our advanced AI recommendation system to find the perfect components for your budget and needs.</p>
-          <Button
-            size="lg"
-            className="bg-white text-green-700 hover:bg-gray-100 rounded-full px-10 h-14 text-lg shadow-xl"
-            onClick={() => setBuilderMode("pc")}
+      <section className="py-20 px-6 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="space-y-6 p-12 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
           >
-            Start Configuration Now
-          </Button>
+            <h2 className="text-4xl font-bold">Ready to Build Your Custom PC?</h2>
+            <p className="text-lg text-muted-foreground">
+              Use our advanced AI recommendation system to find the perfect components for your budget and needs.
+            </p>
+            <Button
+              size="lg"
+              className="rounded-full bg-primary hover:bg-primary/90 text-white px-8"
+              onClick={() => setBuilderMode("pc")}
+            >
+              Start Configuration Now
+            </Button>
+          </motion.div>
         </div>
       </section>
 
