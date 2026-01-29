@@ -78,12 +78,13 @@ export function QuoteForm() {
 
     const services = [
         "Web Development",
-        "IT Support",
-        "IT Consulting",
-        "Artificial Intelligence",
-        "AMC Services",
-        "PC building and Laptops",
-        "Office Networking",
+    "PC building and Laptops",
+    "AMC Services",
+    "Cloud Services",
+    "IT Support",
+    "IT Consulting",
+    "Artificial Intelligence",
+    "Office Networking",
     ]
 
     const inputStyles = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -133,6 +134,76 @@ export function QuoteForm() {
                         </div>
                     </>
                 )
+            case "Cloud Services":
+            return (
+                <>
+                    <div className="space-y-2">
+                        <label className={labelStyles}>Cloud Platform</label>
+                        <select
+                            className={inputStyles}
+                            onChange={(e) => handleDetailChange("platform", e.target.value)}
+                            value={serviceDetails.platform || ""}
+                        >
+                            <option value="" disabled>Select platform</option>
+                            <option value="aws">Amazon Web Services (AWS)</option>
+                            <option value="azure">Microsoft Azure</option>
+                            <option value="gcp">Google Cloud Platform (GCP)</option>
+                            <option value="servicenow">ServiceNow</option>
+                            <option value="hybrid">Hybrid / Multi-Cloud</option>
+                            <option value="not_sure">Not sure (Need consultation)</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyles}>Service Requirement</label>
+                        <select
+                            className={inputStyles}
+                            onChange={(e) => handleDetailChange("serviceType", e.target.value)}
+                            value={serviceDetails.serviceType || ""}
+                        >
+                            <option value="" disabled>Select service</option>
+                            <option value="consulting">Cloud Consulting & Strategy</option>
+                            <option value="migration">Cloud Migration</option>
+                            <option value="infrastructure">Infrastructure Setup & Management</option>
+                            <option value="security">Security & Compliance</option>
+                            <option value="devops">DevOps / CI-CD</option>
+                            <option value="cost">Cost Optimization</option>
+                            <option value="servicenow_impl">ServiceNow Implementation</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyles}>Current Infrastructure</label>
+                        <select
+                            className={inputStyles}
+                            onChange={(e) => handleDetailChange("currentInfra", e.target.value)}
+                            value={serviceDetails.currentInfra || ""}
+                        >
+                            <option value="" disabled>Select infrastructure</option>
+                            <option value="on_prem">On-Premise</option>
+                            <option value="cloud">Existing Cloud</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="new">New / Greenfield</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyles}>Estimated Monthly Cloud Budget</label>
+                        <select
+                            className={inputStyles}
+                            onChange={(e) => handleDetailChange("budget", e.target.value)}
+                            value={serviceDetails.budget || ""}
+                        >
+                            <option value="" disabled>Select budget</option>
+                            <option value="<25k">Below ₹25,000</option>
+                            <option value="25k-75k">₹25,000 – ₹75,000</option>
+                            <option value="75k-2l">₹75,000 – ₹2,00,000</option>
+                            <option value="2l+">₹2,00,000+</option>
+                            <option value="not_decided">Not decided</option>
+                        </select>
+                    </div>
+                </>
+            )
             case "PC and Laptop Building":
                 return (
                     <>

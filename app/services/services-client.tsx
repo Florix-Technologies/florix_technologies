@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
-import { Globe, Headphones, Lightbulb, BrainCircuit, Settings, Monitor, Network, ArrowRight } from "lucide-react"
+import { Globe, Headphones, Lightbulb, BrainCircuit, Settings, Monitor, Network, Cloud, ArrowRight } from "lucide-react"
 
 export default function ServicesClient() {
     const contentRef = useRef<HTMLDivElement>(null)
@@ -82,6 +82,27 @@ export default function ServicesClient() {
             color: "from-green-500/20 to-emerald-500/20"
         },
         {
+            title: "PC building and Laptops",
+            description: "Custom PC assembly for gaming, workstations, and office use. High-quality components and professional cable management.",
+            icon: <Monitor className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
+            link: "/services/pc-building",
+            color: "from-emerald-600/20 to-teal-600/20"
+        },
+        {
+            title: "AMC Services",
+            description: "Annual Maintenance Contracts for your hardware and software infrastructure. Regular checkups and priority support.",
+            icon: <Settings className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
+            link: "/services/amc-services",
+            color: "from-green-600/20 to-emerald-600/20"
+        },
+        {
+            title: "Cloud Services",
+            description:"Cloud migration, DevOps, security, and cost optimization services. We build and manage scalable infrastructure using AWS, Azure, GCP, ServiceNow, and hybrid cloud setups.",
+            icon: <Cloud className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
+            link: "/services/cloud",
+            color: "from-blue-200/30 to-green-200/20"
+        },
+        {
             title: "IT Support",
             description: "24/7 technical support, system maintenance, and troubleshooting. We ensure your business operations run smoothly without interruption.",
             icon: <Headphones className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
@@ -102,20 +123,7 @@ export default function ServicesClient() {
             link: "/services/artificial-intelligence",
             color: "from-teal-500/20 to-cyan-500/20"
         },
-        {
-            title: "AMC Services",
-            description: "Annual Maintenance Contracts for your hardware and software infrastructure. Regular checkups and priority support.",
-            icon: <Settings className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
-            link: "/services/amc-services",
-            color: "from-green-600/20 to-emerald-600/20"
-        },
-        {
-            title: "PC building and Laptops",
-            description: "Custom PC assembly for gaming, workstations, and office use. High-quality components and professional cable management.",
-            icon: <Monitor className="w-8 h-8 md:w-10 md:h-10 text-primary" />,
-            link: "/services/pc-building",
-            color: "from-emerald-600/20 to-teal-600/20"
-        },
+        
         {
             title: "Office Networking",
             description: "Complete office network setup, structured cabling, Wi-Fi configuration, and security implementation.",

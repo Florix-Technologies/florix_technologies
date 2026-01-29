@@ -18,6 +18,7 @@ import {
     Settings,
     Monitor,
     Network,
+    Cloud,
     Send,
     Target,
     Compass,
@@ -149,6 +150,7 @@ export default function HomeClient() {
         "AMC Services": "/services/amc-services",
         "PC and Laptop Building": "/services/pc-building",
         "Office Networking": "/services/office-networking",
+        "Cloud Services": "/services/cloud",
     }
 
     const services = [
@@ -158,6 +160,27 @@ export default function HomeClient() {
                 "Transform your digital presence with cutting-edge web applications. We build responsive, scalable websites using modern technologies like React, Next.js, and TypeScript. From e-commerce platforms to complex web apps, we deliver solutions that drive growth and engagement.",
             Icon: Globe,
             color: "from-green-500/20 to-emerald-500/20",
+        },
+        {
+            title: "PC building and Laptops",
+            description:
+                "Get custom-built computers tailored to your exact specifications. Whether for gaming, content creation, or business applications, we source quality components, ensure optimal performance, and provide comprehensive warranties and ongoing support.",
+            Icon: Monitor,
+            color: "from-emerald-600/20 to-teal-600/20",
+        },
+        {
+            title: "AMC Services",
+            description:
+                "Ensure peak performance with our Annual Maintenance Contracts. We provide regular system health checks, proactive monitoring, priority support, and guaranteed response times. Keep your IT infrastructure running smoothly year-round with minimal disruptions.",
+            Icon: Settings,
+            color: "from-green-600/20 to-emerald-600/20",
+        },
+        {
+            title: "Cloud Services",
+            description:
+                "Modernize your infrastructure with powerful cloud solutions. We help businesses migrate, manage, and optimize workloads on AWS, Azure, GCP, and ServiceNow. Our cloud experts ensure security, scalability, and cost efficiency while enabling faster deployments and seamless operations.",
+            Icon: Cloud,
+            color: "from-teal-600/20 to-green-600/20",
         },
         {
             title: "IT Support",
@@ -179,21 +202,7 @@ export default function HomeClient() {
                 "Harness the power of AI to automate processes and gain competitive advantages. We implement machine learning models, natural language processing, and intelligent automation solutions that learn from your data and adapt to your needs.",
             Icon: BrainCircuit,
             color: "from-teal-500/20 to-cyan-500/20",
-        },
-        {
-            title: "AMC Services",
-            description:
-                "Ensure peak performance with our Annual Maintenance Contracts. We provide regular system health checks, proactive monitoring, priority support, and guaranteed response times. Keep your IT infrastructure running smoothly year-round with minimal disruptions.",
-            Icon: Settings,
-            color: "from-green-600/20 to-emerald-600/20",
-        },
-        {
-            title: "PC building and Laptops",
-            description:
-                "Get custom-built computers tailored to your exact specifications. Whether for gaming, content creation, or business applications, we source quality components, ensure optimal performance, and provide comprehensive warranties and ongoing support.",
-            Icon: Monitor,
-            color: "from-emerald-600/20 to-teal-600/20",
-        },
+        },       
         {
             title: "Office Networking",
             description:
@@ -201,6 +210,7 @@ export default function HomeClient() {
             Icon: Network,
             color: "from-teal-600/20 to-green-600/20",
         },
+        
     ]
 
     const stats = [

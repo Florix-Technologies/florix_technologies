@@ -50,11 +50,12 @@ export function Footer() {
             <h4 className="font-semibold text-foreground">Services</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/services/web-development" className="text-muted-foreground hover:text-primary transition-colors">Web Development</Link></li>
+              <li><Link href="/services/pc-building" className="text-muted-foreground hover:text-primary transition-colors">PC Building</Link></li>
+              <li><Link href="/services/amc-services" className="text-muted-foreground hover:text-primary transition-colors">AMC Services</Link></li>
+              <li><Link href="/services/cloud" className="text-muted-foreground hover:text-primary transition-colors">Cloud Services</Link></li>
               <li><Link href="/services/it-support" className="text-muted-foreground hover:text-primary transition-colors">IT Support</Link></li>
               <li><Link href="/services/it-consulting" className="text-muted-foreground hover:text-primary transition-colors">IT Consulting</Link></li>
-              <li><Link href="/services/artificial-intelligence" className="text-muted-foreground hover:text-primary transition-colors">AI Solutions</Link></li>
-              <li><Link href="/services/amc-services" className="text-muted-foreground hover:text-primary transition-colors">AMC Services</Link></li>
-              <li><Link href="/services/pc-building" className="text-muted-foreground hover:text-primary transition-colors">PC Building</Link></li>
+              <li><Link href="/services/artificial-intelligence" className="text-muted-foreground hover:text-primary transition-colors">AIML Solutions</Link></li>
               <li><Link href="/services/office-networking" className="text-muted-foreground hover:text-primary transition-colors">Office Networking</Link></li>
             </ul>
           </div>
