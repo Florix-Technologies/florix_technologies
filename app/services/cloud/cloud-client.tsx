@@ -147,7 +147,7 @@ export default function CloudClient() {
             >
               <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-xl bg-gradient-to-br from-blue-50 to-green-50 aspect-video flex items-center justify-center">
                 <Image
-                  src="/images/cloud-hero.png"
+                  src="/images/cloud.png"
                   alt="Cloud Services"
                   fill
                   className="object-contain"
