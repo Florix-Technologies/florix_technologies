@@ -96,11 +96,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-    "bingbot": {
-      index: true,
-      follow: true,
-      "max-image-preview": "large"
-    }
   },
   verification: {
     google: "google-site-verification-code-here",
