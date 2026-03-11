@@ -1,22 +1,8 @@
 "use client"
 
-import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
-
-export const metadata: Metadata = {
-  title: "Terms of Service | Florix Technologies",
-  description: "Terms of Service for Florix Technologies. Read our terms and conditions for using our website and services.",
-  openGraph: {
-    title: "Terms of Service | Florix Technologies",
-    description: "Terms of Service for Florix Technologies. Read our terms and conditions for using our website and services.",
-    url: "https://florixtechnologies.com/terms-of-service",
-    siteName: "Florix Technologies",
-    locale: "en_US",
-    type: "website",
-  }
-};
 
 export default function TermsOfServicePage() {
     return (

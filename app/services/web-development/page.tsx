@@ -1,15 +1,16 @@
 "use client"
 
-import { Metadata } from \"next\";
-import { Footer } from \"@/components/footer\"
-import { Navbar } from \"@/components/navbar\"
-import { Button } from \"@/components/ui/button\"
-import { motion } from \"framer-motion\"
-import { useEffect, useRef } from \"react\"
-import { useRouter } from \"next/navigation\"
-import { Globe, Code, Zap, Shield, Combine as Mobile, BarChart3, ArrowRight } from \"lucide-react\"
-import { IconCloudDemo } from \"@/components/icon-cloud-demo\"
-import Image from \"next/image\"\n\nexport const metadata: Metadata = {\n  title: \"Web Development Services | Custom Web Solutions | Florix Technologies\",\n  description: \"Custom web development services using React, Next.js, and Node.js. Responsive design, high performance, and modern technology stack.\",\n  openGraph: {\n    title: \"Web Development Services | Custom Web Solutions | Florix Technologies\",\n    description: \"Custom web development services using React, Next.js, and Node.js. Responsive design, high performance, and modern technology stack.\",\n    url: \"https://florixtechnologies.com/services/web-development\",\n    siteName: \"Florix Technologies\",\n    locale: \"en_US\",\n    type: \"website\",\n  }\n};\n\nexport default function WebDevelopmentPage() {
+import { Footer } from "@/components/footer"
+import { Navbar } from "@/components/navbar"
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
+import { Globe, Code, Zap, Shield, Combine as Mobile, BarChart3, ArrowRight } from "lucide-react"
+import { IconCloudDemo } from "@/components/icon-cloud-demo"
+import Image from "next/image"
+
+export default function WebDevelopmentPage() {
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 

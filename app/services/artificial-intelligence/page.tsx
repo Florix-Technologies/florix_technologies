@@ -1,6 +1,5 @@
 "use client"
 
-import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -9,19 +8,6 @@ import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { BrainCircuit, Zap, Target, BarChart3, Shield, Cpu, ArrowRight } from "lucide-react"
 import Image from "next/image"
-
-export const metadata: Metadata = {
-  title: "AI Integration & Machine Learning Services | Florix Technologies",
-  description: "AI integration, machine learning, and predictive analytics solutions. Build intelligent systems with custom AI implementation.",
-  openGraph: {
-    title: "AI Integration & Machine Learning Services | Florix Technologies",
-    description: "AI integration, machine learning, and predictive analytics solutions. Build intelligent systems with custom AI implementation.",
-    url: "https://florixtechnologies.com/services/artificial-intelligence",
-    siteName: "Florix Technologies",
-    locale: "en_US",
-    type: "website",
-  }
-};
 
 export default function AIPage() {
   const router = useRouter()

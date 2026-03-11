@@ -1,6 +1,5 @@
 "use client"
 
-import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -9,19 +8,6 @@ import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Headphones, Clock, AlertCircle, BarChart3, Users, Zap, ArrowRight } from "lucide-react"
 import Image from "next/image"
-
-export const metadata: Metadata = {
-  title: "IT Support Services | 24/7 Technical Support | Florix Technologies",
-  description: "Comprehensive 24/7 IT support services. Rapid response, proactive monitoring, and expert consultants for your business infrastructure.",
-  openGraph: {
-    title: "IT Support Services | 24/7 Technical Support | Florix Technologies",
-    description: "Comprehensive 24/7 IT support services. Rapid response, proactive monitoring, and expert consultants for your business infrastructure.",
-    url: "https://florixtechnologies.com/services/it-support",
-    siteName: "Florix Technologies",
-    locale: "en_US",
-    type: "website",
-  }
-};
 
 export default function ITSupportPage() {
   const router = useRouter()
