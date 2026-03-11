@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Preloader } from "@/components/preloader"
 import GoogleAnalytics from "@/components/google-analytics"
+import { StructuredData } from '@/components/structured-data'
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -32,12 +33,17 @@ export const metadata: Metadata = {
     "Web Development",
     "PC Building",
     "IT Support",
-    "AI Formatting",
+    "AI Integration",
+    "Cloud Services",
     "Office Networking",
     "AMC Services",
     "Bangalore IT Company",
+    "Bengaluru IT Services",
     "Florix Technologies",
-    "Florix PC Station"
+    "Florix PC Station",
+    "IT Consulting",
+    "Custom PC Building",
+    "24/7 Technical Support"
   ],
   authors: [{ name: "Florix Technologies" }],
   creator: "Florix Technologies",
@@ -68,7 +74,7 @@ export const metadata: Metadata = {
         url: "/Florix.png",
         width: 1200,
         height: 630,
-        alt: "Florix Technologies Logo",
+        alt: "Florix Technologies - Advanced IT Solutions & PC Building",
       },
     ],
   },
@@ -78,6 +84,7 @@ export const metadata: Metadata = {
     description: "Transform your digital presence with cutting-edge web applications and high-performance hardware solutions.",
     images: ["/Florix.png"],
     creator: "@florixtech",
+    site: "@florixtech",
   },
   robots: {
     index: true,
@@ -89,7 +96,21 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+    "bingbot": {
+      index: true,
+      follow: true,
+      "max-image-preview": "large"
+    }
   },
+  verification: {
+    google: "google-site-verification-code-here",
+    other: {
+      "msvalidate.01": "bing-site-verification-code-here",
+    }
+  },
+  alternates: {
+    canonical: baseUrl,
+  }
 }
 
 export default function RootLayout({
@@ -139,6 +160,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <StructuredData />
+      </head>
       <body className={`font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
         <script
           type="application/ld+json"

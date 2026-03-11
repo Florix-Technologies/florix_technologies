@@ -1,5 +1,6 @@
 "use client"
 
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,19 @@ import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Lightbulb, TrendingUp, Users, Target, Zap, Shield, ArrowRight } from "lucide-react"
 import Image from "next/image"
+
+export const metadata: Metadata = {
+  title: "IT Consulting Services | Digital Transformation | Florix Technologies",
+  description: "Strategic IT consulting for digital transformation, technology roadmaps, and innovation. Expert guidance aligned with your business goals.",
+  openGraph: {
+    title: "IT Consulting Services | Digital Transformation | Florix Technologies",
+    description: "Strategic IT consulting for digital transformation, technology roadmaps, and innovation. Expert guidance aligned with your business goals.",
+    url: "https://florixtechnologies.com/services/it-consulting",
+    siteName: "Florix Technologies",
+    locale: "en_US",
+    type: "website",
+  }
+};
 
 export default function ITConsultingPage() {
   const router = useRouter()

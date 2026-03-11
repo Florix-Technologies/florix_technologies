@@ -1,5 +1,6 @@
 "use client"
 
+import { Metadata } from "next";
 import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -8,6 +9,19 @@ import { Button } from "@/components/ui/button"
 import { Monitor, Cpu, PenTool, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+
+export const metadata: Metadata = {
+  title: "Custom PC & Laptop Building | PC Station | Florix Technologies",
+  description: "Custom PC and laptop building services. High-performance builds optimized for your needs - gaming, rendering, workstations.",
+  openGraph: {
+    title: "Custom PC & Laptop Building | PC Station | Florix Technologies",
+    description: "Custom PC and laptop building services. High-performance builds optimized for your needs - gaming, rendering, workstations.",
+    url: "https://florixtechnologies.com/services/pc-building",
+    siteName: "Florix Technologies",
+    locale: "en_US",
+    type: "website",
+  }
+};
 
 export default function PCBuildingPage() {
   const [builderMode, setBuilderMode] = useState<"landing" | "pc" | "laptop">("landing")

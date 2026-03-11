@@ -1,5 +1,6 @@
 "use client"
 
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,19 @@ import { useRouter } from "next/navigation"
 import { useEffect, useRef } from "react"
 import { Settings, BarChart3, AlertCircle, Clock, Shield, Users, ArrowRight } from "lucide-react"
 import Image from "next/image"
+
+export const metadata: Metadata = {
+  title: "AMC Services | Annual Maintenance Contracts | Florix Technologies",
+  description: "Comprehensive AMC services including maintenance, preventive care, and emergency support for all your IT infrastructure.",
+  openGraph: {
+    title: "AMC Services | Annual Maintenance Contracts | Florix Technologies",
+    description: "Comprehensive AMC services including maintenance, preventive care, and emergency support for all your IT infrastructure.",
+    url: "https://florixtechnologies.com/services/amc-services",
+    siteName: "Florix Technologies",
+    locale: "en_US",
+    type: "website",
+  }
+};
 
 export default function AMCServicesPage() {
   const router = useRouter()

@@ -1,8 +1,22 @@
 "use client"
 
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Florix Technologies",
+  description: "Privacy Policy for Florix Technologies. Learn how we collect, use, and protect your personal information.",
+  openGraph: {
+    title: "Privacy Policy | Florix Technologies",
+    description: "Privacy Policy for Florix Technologies. Learn how we collect, use, and protect your personal information.",
+    url: "https://florixtechnologies.com/privacy-policy",
+    siteName: "Florix Technologies",
+    locale: "en_US",
+    type: "website",
+  }
+};
 
 export default function PrivacyPolicyPage() {
     return (
