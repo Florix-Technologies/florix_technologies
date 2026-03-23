@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { motion, useScroll } from "framer-motion"
 import { AuroraText } from "@/components/ui/aurora-text"
+import { submitContactForm } from "@/lib/supabase"
 import {
     Globe,
     Headphones,
@@ -52,6 +53,7 @@ export default function HomeClient() {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
+        countryCode: "+91",
         mobile: "",
         email: "",
         comment: "",
@@ -91,11 +93,22 @@ export default function HomeClient() {
         return () => window.removeEventListener("hashchange", scrollToHash)
     }, [])
 
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        
+        // For mobile number, allow only digits and max 10 characters
+        if (name === "mobile") {
+            const onlyDigits = value.replace(/\D/g, "").slice(0, 10);
+            setFormData({
+                ...formData,
+                [name]: onlyDigits,
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            })
+        }
     }
 
     const handleFormSubmit = async (e: React.FormEvent) => {
@@ -103,35 +116,19 @@ export default function HomeClient() {
         if (isSending) return
         setIsSending(true)
         try {
-            const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-            const payload = {
-                name: `${formData.firstName} ${formData.lastName}`.trim(),
+            await submitContactForm({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
                 email: formData.email,
-                phone: formData.mobile,
-                service: "General Inquiry",
+                countryCode: formData.countryCode,
+                mobile: formData.mobile,
                 message: formData.comment
-            };
-
-            const res = await fetch(`${backendUrl}/contact`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
             })
-
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}))
-                console.error("Contact send failed", err)
-                const message = err?.error || "Failed to send message. Please try again later."
-                setStatusMessage({ type: "error", text: message })
-                setTimeout(() => setStatusMessage(null), 5000)
-                setIsSending(false)
-                return
-            }
 
             setFormSubmitted(true)
             setStatusMessage({ type: "success", text: "Message sent successfully. We will get back to you soon." })
             setTimeout(() => setStatusMessage(null), 4000)
-            setFormData({ firstName: "", lastName: "", mobile: "", email: "", comment: "" })
+            setFormData({ firstName: "", lastName: "", countryCode: "+91", mobile: "", email: "", comment: "" })
             setTimeout(() => setFormSubmitted(false), 2500)
         } catch (error) {
             console.error("Contact error", error)
@@ -631,7 +628,6 @@ export default function HomeClient() {
                                                 name="firstName"
                                                 value={formData.firstName}
                                                 onChange={handleFormChange}
-                                                placeholder="Sachin"
                                                 className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                                                 required
                                             />
@@ -648,7 +644,6 @@ export default function HomeClient() {
                                                 name="lastName"
                                                 value={formData.lastName}
                                                 onChange={handleFormChange}
-                                                placeholder="Tendulkar"
                                                 className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                                                 required
                                             />
@@ -663,15 +658,32 @@ export default function HomeClient() {
                                             viewport={{ once: true }}
                                         >
                                             <label className="text-sm font-semibold text-foreground mb-2 block">Mobile Number</label>
-                                            <input
-                                                type="tel"
-                                                name="mobile"
-                                                value={formData.mobile}
-                                                onChange={handleFormChange}
-                                                placeholder="+91 98765 43210"
-                                                className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
-                                                required
-                                            />
+                                            <div className="flex gap-2">
+                                                <select
+                                                    name="countryCode"
+                                                    value={formData.countryCode}
+                                                    onChange={handleFormChange}
+                                                    className="w-24 px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground focus:outline-none focus:border-primary transition-colors duration-300 cursor-pointer"
+                                                >
+                                                    <option value="+91">+91</option>
+                                                    <option value="+1">+1</option>
+                                                    <option value="+44">+44</option>
+                                                    <option value="+61">+61</option>
+                                                    <option value="+81">+81</option>
+                                                    <option value="+86">+86</option>
+                                                </select>
+                                                <input
+                                                    type="tel"
+                                                    name="mobile"
+                                                    placeholder="10 digits"
+                                                    value={formData.mobile}
+                                                    onChange={handleFormChange}
+                                                    maxLength={10}
+                                                    inputMode="numeric"
+                                                    className="flex-1 px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
+                                                    required
+                                                />
+                                            </div>
                                         </motion.div>
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}
@@ -685,7 +697,6 @@ export default function HomeClient() {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleFormChange}
-                                                placeholder="sachin.tendulkar@example.com"
                                                 className="w-full px-0 py-3 bg-transparent border-b-2 border-primary/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                                                 required
                                             />

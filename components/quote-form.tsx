@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Send, Loader2, CheckCircle2 } from "lucide-react"
+import { submitQuoteForm } from "@/lib/supabase"
 
 export function QuoteForm() {
     const [service, setService] = useState("")
@@ -17,7 +18,8 @@ export function QuoteForm() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        phone: "",
+        countryCode: "+91",
+        mobile: "",
         message: "",
     })
 
@@ -31,7 +33,17 @@ export function QuoteForm() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+        if (name === "mobile") {
+            const onlyDigits = value.replace(/\D/g, "").slice(0, 10)
+            setFormData(prev => ({ ...prev, [name]: onlyDigits }))
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }))
+        }
+    }
+
+    const handleCountryCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target
+        setFormData(prev => ({ ...prev, countryCode: value }))
     }
 
     const handleDetailChange = (key: string, value: string) => {
@@ -43,28 +55,19 @@ export function QuoteForm() {
         setError("")
 
         try {
-            const payload = {
-                ...formData,
+            await submitQuoteForm({
+                name: formData.name,
+                email: formData.email,
+                countryCode: formData.countryCode,
+                mobile: formData.mobile,
+                message: formData.message,
                 service,
                 serviceDetails
-            }
-
-            const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-            const res = await fetch(`${backendUrl}/contact`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
             })
-
-            const data = await res.json()
-
-            if (!res.ok) {
-                throw new Error(data.error || 'Something went wrong')
-            }
 
             setIsSuccess(true)
             // Reset form
-            setFormData({ name: "", email: "", phone: "", message: "" })
+            setFormData({ name: "", email: "", countryCode: "+91", mobile: "", message: "" })
             setService("")
             setServiceDetails({})
 
@@ -332,19 +335,35 @@ export function QuoteForm() {
                             <label className={labelStyles}>Name</label>
                             <Input
                                 name="name"
-                                placeholder="Sachin Tendulkar"
                                 value={formData.name}
                                 onChange={handleInputChange}
                             />
                         </div>
                         <div className="space-y-2">
                             <label className={labelStyles}>Phone</label>
-                            <Input
-                                name="phone"
-                                placeholder="+91 98765 43210"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                            />
+                            <div className="flex gap-2">
+                                <select
+                                    className={`${inputStyles} flex-shrink-0 w-24`}
+                                    value={formData.countryCode}
+                                    onChange={handleCountryCodeChange}
+                                >
+                                    <option value="+91">+91</option>
+                                    <option value="+1">+1</option>
+                                    <option value="+44">+44</option>
+                                    <option value="+61">+61</option>
+                                    <option value="+81">+81</option>
+                                    <option value="+86">+86</option>
+                                </select>
+                                <Input
+                                    type="tel"
+                                    name="mobile"
+                                    placeholder="10-digit number"
+                                    value={formData.mobile}
+                                    onChange={handleInputChange}
+                                    maxLength={10}
+                                    inputMode="numeric"
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -353,7 +372,6 @@ export function QuoteForm() {
                         <Input
                             name="email"
                             type="email"
-                            placeholder="sachin.tendulkar@example.com"
                             value={formData.email}
                             onChange={handleInputChange}
                         />
