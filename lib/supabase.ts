@@ -1,9 +1,27 @@
+'use client'
+
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!
+let supabase: ReturnType<typeof createClient> | null = null
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+function getSupabaseClient() {
+  if (typeof window === 'undefined') {
+    throw new Error('Supabase client can only be used on the client side')
+  }
+
+  if (!supabase) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing Supabase environment variables')
+    }
+
+    supabase = createClient(supabaseUrl, supabaseKey)
+  }
+
+  return supabase
+}
 
 // Function to submit contact form to Supabase
 export async function submitContactForm(data: {
@@ -15,7 +33,8 @@ export async function submitContactForm(data: {
   message: string
 }) {
   try {
-    const { data: result, error } = await supabase
+    const supabaseClient = getSupabaseClient()
+    const { data: result, error } = await supabaseClient
       .from('form_submissions')
       .insert([
         {
@@ -54,7 +73,8 @@ export async function submitQuoteForm(data: {
   serviceDetails: any
 }) {
   try {
-    const { data: result, error } = await supabase
+    const supabaseClient = getSupabaseClient()
+    const { data: result, error } = await supabaseClient
       .from('form_submissions')
       .insert([
         {
