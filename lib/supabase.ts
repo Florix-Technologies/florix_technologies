@@ -23,6 +23,19 @@ function getSupabaseClient() {
   return supabase
 }
 
+interface FormSubmission {
+  form_type: string
+  first_name: string
+  last_name: string | null
+  email: string
+  country_code: string
+  phone: string
+  message: string
+  service?: string | null
+  service_details?: Record<string, any> | null
+  created_at: string
+}
+
 // Function to submit contact form to Supabase
 export async function submitContactForm(data: {
   firstName: string
@@ -34,20 +47,20 @@ export async function submitContactForm(data: {
 }) {
   try {
     const supabaseClient = getSupabaseClient()
-    const { data: result, error } = await supabaseClient
+    const formData: FormSubmission = {
+      form_type: 'contact',
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      phone: `${data.countryCode}${data.mobile}`,
+      country_code: data.countryCode,
+      message: data.message,
+      created_at: new Date().toISOString(),
+    }
+
+    const { data: result, error } = await (supabaseClient
       .from('form_submissions')
-      .insert([
-        {
-          form_type: 'contact',
-          first_name: data.firstName,
-          last_name: data.lastName,
-          email: data.email,
-          phone: `${data.countryCode}${data.mobile}`,
-          country_code: data.countryCode,
-          message: data.message,
-          created_at: new Date().toISOString(),
-        }
-      ])
+      .insert([formData] as any))
       .select()
 
     if (error) {
@@ -74,22 +87,22 @@ export async function submitQuoteForm(data: {
 }) {
   try {
     const supabaseClient = getSupabaseClient()
-    const { data: result, error } = await supabaseClient
+    const formData: FormSubmission = {
+      form_type: 'quote',
+      first_name: data.name.split(' ')[0] || data.name,
+      last_name: data.name.split(' ').slice(1).join(' ') || '',
+      email: data.email,
+      phone: `${data.countryCode}${data.mobile}`,
+      country_code: data.countryCode,
+      message: data.message,
+      service: data.service,
+      service_details: data.serviceDetails,
+      created_at: new Date().toISOString(),
+    }
+
+    const { data: result, error } = await (supabaseClient
       .from('form_submissions')
-      .insert([
-        {
-          form_type: 'quote',
-          first_name: data.name.split(' ')[0] || data.name,
-          last_name: data.name.split(' ').slice(1).join(' ') || '',
-          email: data.email,
-          phone: `${data.countryCode}${data.mobile}`,
-          country_code: data.countryCode,
-          message: data.message,
-          service: data.service,
-          service_details: data.serviceDetails,
-          created_at: new Date().toISOString(),
-        }
-      ])
+      .insert([formData] as any))
       .select()
 
     if (error) {
